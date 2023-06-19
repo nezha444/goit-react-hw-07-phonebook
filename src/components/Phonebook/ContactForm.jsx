@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContacts } from '../redux/Phonebook/phonebookSlice';
+import { postContactsThunk } from 'components/redux/Phonebook/phonebookThunk';
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
@@ -12,9 +13,9 @@ export const ContactForm = () => {
     const newContact = {
       id: `${nanoid()}`,
       name: name,
-      number: number,
+      phone: number,
     };
-    const isExist = contacts.some(
+    const isExist = contacts.items.some(
       el =>
         (el.name && el.name.toLowerCase() === name.toLowerCase()) ||
         (el.number && el.number === number)
@@ -23,12 +24,13 @@ export const ContactForm = () => {
       alert('Contact already exists');
       return;
     }
+    dispatch(postContactsThunk(newContact));
     dispatch(addContacts(newContact));
-    // setContacts(prev => prev.concat(newContact));
   };
 
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+
   const handleInput = event => {
     const { name, value } = event.target;
     if (name === 'name') {
@@ -75,6 +77,14 @@ export const ContactForm = () => {
         </label>
         <button type="submit">Add contact</button>
       </form>
+      {/* <button
+        onClick={() => {
+          dispatch(getContactsThunk());
+        }}
+        type="button"
+      >
+        aaaaaaaaaa
+      </button> */}
     </div>
   );
 };

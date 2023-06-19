@@ -1,13 +1,22 @@
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeContact } from '../redux/Phonebook/phonebookSlice';
+// import { removeContact } from '../redux/Phonebook/phonebookSlice';
+import {
+  deleteContactsThunk,
+  getContactsThunk,
+} from 'components/redux/Phonebook/phonebookThunk';
+import { useEffect } from 'react';
 
 export const ContactList = () => {
   const dispatch = useDispatch();
   const { contacts, filter } = useSelector(state => state.phonebook);
 
+  useEffect(() => {
+    dispatch(getContactsThunk());
+  }, []);
+
   const getFilterContacts = () => {
-    return contacts.filter(
+    return contacts.items.filter(
       contact =>
         contact.name &&
         contact.name.toLowerCase().includes(filter.toLowerCase())
@@ -20,10 +29,16 @@ export const ContactList = () => {
         {getFilterContacts().map(contact => (
           <li key={contact.id}>
             <p>
-              {contact.name}: {contact.number}
+              {contact.name}: {contact.phone}
             </p>
             <button
-              onClick={() => dispatch(removeContact(contact.id))}
+              onClick={() => {
+                console.log(contact.id);
+                return dispatch(
+                  // removeContact(contact.id),
+                  deleteContactsThunk(contact.id)
+                );
+              }}
               type="button"
             >
               Delete
