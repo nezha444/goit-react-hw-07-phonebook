@@ -13,7 +13,7 @@ export const ContactList = () => {
 
   useEffect(() => {
     dispatch(getContactsThunk());
-  }, []);
+  }, [dispatch]);
 
   const getFilterContacts = () => {
     return contacts.items.filter(
