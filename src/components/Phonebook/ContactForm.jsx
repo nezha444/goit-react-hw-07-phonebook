@@ -2,7 +2,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContacts } from '../redux/Phonebook/phonebookSlice';
+
 import { postContactsThunk } from 'components/redux/Phonebook/phonebookThunk';
 
 export const ContactForm = () => {
@@ -25,7 +25,6 @@ export const ContactForm = () => {
       return;
     }
     dispatch(postContactsThunk(newContact));
-    dispatch(addContacts(newContact));
   };
 
   const [name, setName] = useState('');
